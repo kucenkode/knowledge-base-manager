@@ -31,8 +31,8 @@ export class DocumentsService {
     return document;
   }
 
-  findDocumentById(id: string) {
-    storage.documents.find((document) => document.id === id);
+  findDocumentById(id: string): Document {
+    const document = storage.documents.find((document) => document.id === id);
 
     if (!document) {
       throw new NotFoundException('Документ не найден');
@@ -42,13 +42,15 @@ export class DocumentsService {
   }
 
   deleteDocument(id: string) {
-    const impact = this.impactService.calculateImpact(id);
-    this.impactService.applyImpact(id);
+    const entities = this.impactService.collectImpact(id);
+    const report = this.impactService.calculateImpact(entities);
+
+    this.impactService.applyImpact(entities, id);
 
     storage.documents = storage.documents.filter(
       (document) => document.id !== id,
     );
 
-    return impact;
+    return report;
   }
 }

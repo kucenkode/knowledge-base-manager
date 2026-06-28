@@ -5,7 +5,7 @@ import { storage } from '../../database/storage';
 
 @Injectable()
 export class ImpactService {
-  private getImpactEntities(documentId: string): ImpactEntities {
+  collectImpact(documentId: string): ImpactEntities {
     const document = storage.documents.find(
       (document) => document.id === documentId,
     );
@@ -42,9 +42,9 @@ export class ImpactService {
     };
   }
 
-  calculateImpact(documentId: string): ImpactReport {
+  calculateImpact(entities: ImpactEntities): ImpactReport {
     const { document, affectedAudiences, affectedVpcs, affectedPages } =
-      this.getImpactEntities(documentId);
+      entities;
 
     return {
       document: {
@@ -67,12 +67,13 @@ export class ImpactService {
     };
   }
 
-  applyImpact(documentId: string) {
-    const { affectedAudiences, affectedVpcs, affectedPages } =
-      this.getImpactEntities(documentId);
+  applyImpact(entities: ImpactEntities, documentId: string) {
+    const { affectedAudiences, affectedVpcs, affectedPages } = entities;
 
     affectedAudiences.forEach((audience) => {
       audience.interview.status = STATUSES.outdated;
+
+      audience.docIds = audience.docIds.filter((id) => id !== documentId);
     });
 
     affectedVpcs.forEach((vpc) => {

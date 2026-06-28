@@ -7,6 +7,6 @@ export class ImpactController {
 
   @Get(':docId')
   getImpact(@Param('docId') id: string) {
-    return this.impactService.calculateImpact(id);
+    return this.impactService.collectImpact(id);
   }
 }
