@@ -7,8 +7,8 @@ export class AudienceController {
   constructor(private readonly audienceService: AudienceService) {}
 
   @Get()
-  getAudiences() {
-    return this.audienceService.getAudiences();
+  getAllAudiences() {
+    return this.audienceService.getAllAudiences();
   }
 
   @Post()
