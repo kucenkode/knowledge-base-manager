@@ -1,7 +1,7 @@
 import { Audience } from '../../audiences/entities/audience.entity';
 import { Document } from '../../documents/entities/document.entity';
 import { Page } from '../../pages/entities/page.entity';
-import { VPC } from '../../vpcs/entities/vpc.entity';
+import { VPC } from '../../audiences/entities/vpc.entity';
 
 export type ImpactReport = {
   document: {
