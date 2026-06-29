@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePageDto } from './dto/create-page.dto';
 import { storage } from 'src/database/storage';
 import { Page } from './entities/page.entity';
@@ -12,7 +12,7 @@ export class PagesService {
 
   createPage(dto: CreatePageDto) {
     if (!dto?.name || !dto?.audienceIds) {
-      throw new NotFoundException(
+      throw new BadRequestException(
         'Одно из полей name или audienceIds не указано',
       );
     }

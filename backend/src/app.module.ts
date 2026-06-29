@@ -14,8 +14,8 @@ import { Module } from '@nestjs/common';
 
     DocumentsModule,
     AudiencesModule,
-    PagesModule,
     ImpactModule,
+    PagesModule,
   ],
 })
 export class AppModule {}
