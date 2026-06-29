@@ -11,9 +11,20 @@ export class PagesService {
   }
 
   createPage(dto: CreatePageDto) {
-    if (!dto?.name || !dto?.audienceIds) {
+    if (!dto?.name || !dto?.audienceIds?.length) {
       throw new BadRequestException(
         'Одно из полей name или audienceIds не указано',
+      );
+    }
+
+    const notFoundAudienceIds = dto.audienceIds.filter(
+      (audienceId) =>
+        !storage.audiences.some((audience) => audience.id === audienceId),
+    );
+
+    if (notFoundAudienceIds.length) {
+      throw new BadRequestException(
+        `Аудитории не найдены: ${notFoundAudienceIds.join(', ')}`,
       );
     }
 

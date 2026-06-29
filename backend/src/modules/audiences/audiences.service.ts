@@ -12,8 +12,18 @@ export class AudienceService {
   }
 
   createAudience(dto: CreateAudienceDto) {
-    if (!dto?.name || !dto?.docIds) {
+    if (!dto?.name || !dto?.docIds?.length) {
       throw new BadRequestException('Одно из полей name или docIds не указано');
+    }
+
+    const notFoundDocIds = dto.docIds.filter(
+      (docId) => !storage.documents.some((doc) => doc.id === docId),
+    );
+
+    if (notFoundDocIds.length) {
+      throw new BadRequestException(
+        `Документы не найдены: ${notFoundDocIds.join(', ')}`,
+      );
     }
 
     const audience = new Audience(
