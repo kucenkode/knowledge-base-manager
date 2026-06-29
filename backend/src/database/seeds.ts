@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { storage } from './storage';
 
 export const applyDataSeeds = () => {
+  if (storage.documents.length) return;
+
   // Documents
   const audienceDoc = new Document(
     uuidv4(),
