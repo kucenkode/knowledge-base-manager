@@ -1,5 +1,5 @@
 import { CreateAudienceDto } from './dto/create-audience.dto';
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AudienceService } from './audiences.service';
 
 @Controller('audiences')
@@ -12,7 +12,7 @@ export class AudienceController {
   }
 
   @Post()
-  createAudience(dto: CreateAudienceDto) {
+  createAudience(@Body() dto: CreateAudienceDto) {
     return this.audienceService.createAudience(dto);
   }
 }

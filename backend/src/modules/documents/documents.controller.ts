@@ -12,8 +12,8 @@ export class DocumentsController {
   }
 
   @Post()
-  createDocument(@Body() document: CreateDocumentDto) {
-    return this.documentsService.createDocument(document);
+  createDocument(@Body() dto: CreateDocumentDto) {
+    return this.documentsService.createDocument(dto);
   }
 
   @Delete(':id')
