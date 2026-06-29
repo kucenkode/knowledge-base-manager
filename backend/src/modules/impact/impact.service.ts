@@ -1,11 +1,11 @@
-import { ImpactReport, ImpactEntities } from './types/impact.types';
 import { STATUSES } from 'src/common/constants/status.constant';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ImpactReport } from './types/impact.types';
 import { storage } from '../../database/storage';
 
 @Injectable()
 export class ImpactService {
-  collectImpact(documentId: string): ImpactEntities {
+  collectImpact(documentId: string): ImpactReport {
     const document = storage.documents.find(
       (document) => document.id === documentId,
     );
@@ -35,18 +35,6 @@ export class ImpactService {
     );
 
     return {
-      document,
-      affectedAudiences,
-      affectedVpcs,
-      affectedPages,
-    };
-  }
-
-  calculateImpact(entities: ImpactEntities): ImpactReport {
-    const { document, affectedAudiences, affectedVpcs, affectedPages } =
-      entities;
-
-    return {
       document: {
         id: document.id,
         name: document.name,
@@ -67,21 +55,27 @@ export class ImpactService {
     };
   }
 
-  applyImpact(entities: ImpactEntities, documentId: string) {
-    const { affectedAudiences, affectedVpcs, affectedPages } = entities;
+  applyImpact(impact: ImpactReport) {
+    impact.affectedAudiences.forEach(({ id }) => {
+      const audience = storage.audiences.find((item) => item.id === id);
 
-    affectedAudiences.forEach((audience) => {
+      if (!audience) return;
+
       audience.interview.status = STATUSES.outdated;
-
-      audience.docIds = audience.docIds.filter((id) => id !== documentId);
     });
 
-    affectedVpcs.forEach((vpc) => {
-      vpc.status = STATUSES.outdated;
+    impact.affectedVpcs.forEach((id) => {
+      const vpc = storage.vpcs.find((item) => item.id === id);
+
+      if (vpc) {
+        vpc.status = STATUSES.outdated;
+      }
     });
 
-    affectedPages.forEach((page) => {
-      page.sections.forEach((section) => {
+    impact.affectedPages.forEach(({ id }) => {
+      const page = storage.pages.find((item) => item.id === id);
+
+      page?.sections.forEach((section) => {
         section.status = STATUSES.outdated;
       });
     });

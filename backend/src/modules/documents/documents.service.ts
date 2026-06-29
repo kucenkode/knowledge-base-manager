@@ -46,15 +46,13 @@ export class DocumentsService {
   }
 
   deleteDocument(id: string) {
-    const entities = this.impactService.collectImpact(id);
-    const report = this.impactService.calculateImpact(entities);
-
-    this.impactService.applyImpact(entities, id);
+    const impact = this.impactService.collectImpact(id);
+    this.impactService.applyImpact(impact);
 
     storage.documents = storage.documents.filter(
       (document) => document.id !== id,
     );
 
-    return report;
+    return impact;
   }
 }
