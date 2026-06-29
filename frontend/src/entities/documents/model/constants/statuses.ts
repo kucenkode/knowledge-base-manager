@@ -1,7 +1,7 @@
-const STATUSES = {
+const DOCUMENT_STATUSES = {
   new: "new",
   outlined: "outlined",
   outdated: "outdated",
 };
 
-export { STATUSES };
+export { DOCUMENT_STATUSES };

@@ -6,8 +6,8 @@ const DocumentAPI = {
     return http.get("/documents");
   },
 
-  postCreateNewDocument(data: DocumentCardData) {
-    return http.post("/documents", data);
+  postCreateNewDocument(documentData: DocumentCardData) {
+    return http.post("/documents", documentData);
   },
 
   deleteDocument(id: string) {

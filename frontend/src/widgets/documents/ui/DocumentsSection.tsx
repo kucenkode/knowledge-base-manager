@@ -13,6 +13,14 @@ const DocumentsSection = () => {
     },
   });
 
+  const deleteDocument = async (id: string) => {
+    try {
+      await DocumentAPI.deleteDocument(id);
+    } catch {
+      throw new Error();
+    }
+  };
+
   if (isLoading) {
     return <CircularProgress />;
   }
@@ -25,9 +33,7 @@ const DocumentsSection = () => {
             key={document.id}
             name={document.name}
             status={document.status}
-            onDelete={() => {
-              DocumentAPI.deleteDocument(document.id);
-            }}
+            onDelete={() => deleteDocument(document.id)}
           />
         );
       })}

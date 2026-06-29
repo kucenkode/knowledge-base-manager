@@ -1,4 +1,4 @@
-import { DocumentCardData } from "../index";
+import type { DocumentCardData } from "../index";
 import {
   CardContent,
   Typography,
@@ -17,12 +17,11 @@ const DocumentCard = ({
 }: DocumentCardData) => {
   return (
     <Card
-      onClick={onClick}
       sx={{
         cursor: "pointer",
         border: active ? "2px solid #1976d2" : undefined,
-        transition: "0.2s",
       }}
+      onClick={onClick}
     >
       <CardContent>
         <Stack spacing={2}>
@@ -33,15 +32,7 @@ const DocumentCard = ({
             color={status === "outdated" ? "error" : "success"}
           />
 
-          <Button
-            color="error"
-            variant="outlined"
-            onClick={(e) => {
-              e.stopPropagation();
-
-              onDelete();
-            }}
-          >
+          <Button color="error" variant="outlined" onClick={() => onDelete}>
             Delete
           </Button>
         </Stack>

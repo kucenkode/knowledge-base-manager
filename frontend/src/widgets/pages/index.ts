@@ -1,0 +1,1 @@
+export { PagesAPI } from "./api";
